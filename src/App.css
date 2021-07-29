@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.main-footer{
+  color:white;
+  background-color:#343A40;
+  padding-top: 3em;
+  position:relative;
+  bottom:0;
+  width:100%;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

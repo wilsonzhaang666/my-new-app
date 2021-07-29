@@ -1,22 +1,35 @@
+import {Navbar, Nav,NavDropdown,} from 'react-bootstrap';
+
+import Container from 'react-bootstrap/Container';
 
 function Header() {
   return (
-      <div>
-<div className="header">
-  <a href="#default" class="logo">CompanyLogo</a>
-  <div className="header-right">
-    <a className="active" href="#home">Home</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
-  </div>
-</div>
+<>
+<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+  <Container>
+  <Navbar.Brand href="#home">Vibe-App</Navbar.Brand>
+  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+  <Navbar.Collapse id="responsive-navbar-nav">
+    <Nav className="me-auto">
+      <Nav.Link href="#features">Home</Nav.Link>
+      <Nav.Link href="#pricing">Pricing</Nav.Link>
+      <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+      </NavDropdown>
+    </Nav>
+    <Nav>
+      <Nav.Link href="#deets">Log In</Nav.Link>
+      <Nav.Link href="#deets">Sign Up</Nav.Link>
 
-<div >
-  <h1>Responsive Header</h1>
-  <p>Resize the browser window to see the effect.</p>
-  <p>Some content..</p>
-</div>
-</div>
+    </Nav>
+  </Navbar.Collapse>
+  </Container>
+</Navbar>
+</>
   );
 }
 
