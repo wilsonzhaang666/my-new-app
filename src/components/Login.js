@@ -27,14 +27,17 @@ class Login extends React.Component {
                 <input name="username" id="username" className="form-control"
                   value={this.state.fields.username} onChange={this.handleInputChange} />
               </div>
+              <br />
               <div className="form-group">
                 <label htmlFor="password" className="control-label">Password</label>
                 <input type="password" name="password" id="password" className="form-control"
                   value={this.state.fields.password} onChange={this.handleInputChange} />
               </div>
+              <br />
               <div className="form-group">
                 <input type="submit" className="btn btn-primary" value="Login" />
               </div>
+              <br />
               {this.state.errors["errorMessage"] &&
                 <div className="form-group">
                   <span className="text-danger">{this.state.errors["errorMessage"]}</span>
