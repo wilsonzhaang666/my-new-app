@@ -11,13 +11,33 @@ class Login extends React.Component {
   }
 
   onChangeUsername = (e) =>{
-    this.setState({name:e.target.value})
+    this.setState({username:e.target.value})
   }
 
   onChangePassword = (e) =>{
     this.setState({password:e.target.value})
   }
 
+  handleSubmit = (e) =>{
+    let { history } = this.props
+    let ele;
+    e.preventDefault()
+    let olddata = localStorage.getItem('userdata')
+    let oldArr = JSON.parse(olddata)
+    oldArr.map(arr => 
+      {
+        if(this.state.username.length > 0 && this.state.password.length > 0){
+          if (arr.username == this.state.username && (arr.password == this.state.password)) {
+            let user = this.state.username;
+            history.push({ pathname: "/", user: this.state.username });
+            alert("success")
+          }else{
+            this.setState({error:'Please check your email or password'})
+          }
+        }
+      }
+      )
+  }
 
   render() {
     return (
