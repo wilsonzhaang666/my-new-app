@@ -4,14 +4,19 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {
         username: "",
-        password: ""
-      },
+        password: "",
       errors: { }
     };
   }
 
+  onChangeUsername = (e) =>{
+    this.setState({name:e.target.value})
+  }
+
+  onChangePassword = (e) =>{
+    this.setState({password:e.target.value})
+  }
 
 
   render() {
@@ -25,13 +30,13 @@ class Login extends React.Component {
               <div className="form-group">
                 <label htmlFor="username" className="control-label">Username</label>
                 <input name="username" id="username" className="form-control"
-                  value={this.state.fields.username} onChange={this.handleInputChange} />
+                  value={this.state.username} onChange={this.onChangeUsername} />
               </div>
               <br />
               <div className="form-group">
                 <label htmlFor="password" className="control-label">Password</label>
                 <input type="password" name="password" id="password" className="form-control"
-                  value={this.state.fields.password} onChange={this.handleInputChange} />
+                  value={this.state.password} onChange={this.onChangePassword} />
               </div>
               <br />
               <div className="form-group">

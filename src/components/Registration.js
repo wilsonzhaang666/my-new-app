@@ -4,34 +4,28 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {
+      
         username: "",
         email:"",
         password: "",
-        confirmpassword: ""
-      },
+        confirmpassword: "",
       errors: { }
     };
   }
 
   handleInputChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    
-    const fields = this.state.fields;
-    fields[name] = value;
+    this.setState({ [event.target.name]: event.target.value });
 
-    this.setState({ fields });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const email = this.state.fields.email;
-    const username = this.state.fields.username;
-    const password = this.state.fields.password;
-    const confirmpassword = this.state.fields.confirmpassword;
+    const email = this.state.email;
+    const username = this.state.username;
+    const password = this.state.password;
+    const confirmpassword = this.state.confirmpassword;
     const emailRegex = /\S+@\S+\.\S+/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[A-Za-z\d!@#$%^&*?]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[A-Za-z\d!@#$%^&*?]{6,}$/;
     if(!username ||!email||!password||!confirmpassword) {
       const fields = this.state.fields;
       this.setState({
@@ -65,17 +59,35 @@ class Registration extends React.Component {
       });
     }
     else{
-      const fields = this.state.fields;
-
+      let ob = {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+      }
+      let olddata = localStorage.getItem('userdata');
+      if(olddata==null){
+        olddata = []
+        olddata.push(ob)
+        localStorage.setItem('userdata', JSON.stringify(olddata));
+      }else{
+        let oldArr = JSON.parse(olddata)
+        oldArr.push(ob)
+        localStorage.setItem("userdata", JSON.stringify(oldArr))
+        console.log(oldArr,'hhg')
+      }
+      const fields  = this.state.fields;
       this.setState({
         fields: fields,
-        errors: { "errorMessage": "true." }
+        errors: { "errorMessage": "Congrate the registration is success ." }
       });
     }
 
     // Reset password field to blank.
 
   }
+
+
+
 
   render() {
     return (
@@ -88,27 +100,27 @@ class Registration extends React.Component {
               <div className="form-group">
                 <label htmlFor="username" className="control-label">Username</label>
                 <input name="username" id="username" className="form-control"
- a                 value={this.state.fields.username} onChange={this.handleInputChange} />
+                 value={this.state.username} onChange={this.handleInputChange} />
               </div>
               <br />
               <div className="form-group">
                 <label htmlFor="email" className="control-label">Email</label>
                 <input name="email" id="email" className="form-control"
- a                 value={this.state.fields.email} onChange={this.handleInputChange} />
+                  value={this.state.email} onChange={this.handleInputChange} />
               </div>
               <br />
 
               <div className="form-group">
                 <label htmlFor="password" className="control-label">Password</label>
                 <input type="password" name="password" id="password" className="form-control"
-                  value={this.state.fields.password} onChange={this.handleInputChange} />
+                  value={this.state.password} onChange={this.handleInputChange} />
               </div>
               <br />
 
               <div className="form-group">
                 <label htmlFor="confirmpassword" className="control-label">Confirm Password</label>
                 <input type="password" name="confirmpassword" id="confirmpassword" className="form-control"
-                  value={this.state.fields.confirmpassword} onChange={this.handleInputChange} />
+                  value={this.state.confirmpassword} onChange={this.handleInputChange} />
               </div>
               <br />
 
