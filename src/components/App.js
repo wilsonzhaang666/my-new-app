@@ -5,6 +5,8 @@ import Footer from './Footer';
 import Home from './Home';
 import Registration from './Registration';
 import Login from './Login';
+import MyProfile from "./MyProfile";
+
 
 class App extends React.Component {
   constructor(props) {
@@ -29,12 +31,16 @@ class App extends React.Component {
             <div className="container my-3">
               <Switch>
                 {/* NOTE: The technique below is to pass down the history property to the Login component. */}
-                <Route path="/Registration" render={props => (
-                  <Registration {...props} loginUser={this.loginUser} />
-                )} />
                 <Route path="/Login" render={props => (
                   <Login {...props} loginUser={this.loginUser} />
                 )} />
+               <Route path="/profile">
+                  <MyProfile username={this.state.username} />
+                </Route>
+
+               <Route path="/Registration">
+                  <Registration username={this.state.username} />
+                </Route>
                 <Route path="/">
                   <Home username={this.state.username} />
                 </Route>                

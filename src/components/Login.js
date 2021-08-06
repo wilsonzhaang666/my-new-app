@@ -19,8 +19,8 @@ class Login extends React.Component {
   }
 
   handleSubmit = (e) =>{
+    const username = this.state.username;
     let { history } = this.props
-    let ele;
     e.preventDefault()
     let olddata = localStorage.getItem('userdata')
     let oldArr = JSON.parse(olddata)
@@ -28,11 +28,15 @@ class Login extends React.Component {
       {
         if(this.state.username.length > 0 && this.state.password.length > 0){
           if (arr.username == this.state.username && (arr.password == this.state.password)) {
-            let user = this.state.username;
-            history.push({ pathname: "/", user: this.state.username });
+            this.props.loginUser(username);
+            history.push({ pathname: "/", username: this.state.username });
             alert("success")
           }else{
-            this.setState({error:'Please check your email or password'})
+            const fields = this.state.fields;
+            this.setState({
+            fields: fields,
+            errors: { "errorMessage": "You need to check your username or password" }
+      });
           }
         }
       }

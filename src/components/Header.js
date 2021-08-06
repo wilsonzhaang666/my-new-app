@@ -1,6 +1,8 @@
 import React from 'react';
 import {Navbar, Nav,NavDropdown,} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
+import { Link } from "react-router-dom";
+
 
 class Header extends React.Component {
   render() {
@@ -8,17 +10,42 @@ class Header extends React.Component {
 <>
 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
   <Container>
-  <Navbar.Brand href="/">Vibe-App</Navbar.Brand>
+  <Link className="navbar-brand" to="/">Vibe-App</Link>
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="me-auto">
-      <Nav.Link href="/">Home</Nav.Link>
-
+    <Link className="nav-link" to="/">Home</Link>
+    {this.props.username !== null &&
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">My Profile</Link>
+                </li>
+              }
+    
 
     </Nav>
     <Nav>
-      <Nav.Link href="/Login">Log In</Nav.Link>
-      <Nav.Link href="/Registration">Registration</Nav.Link>
+    <ul className="navbar-nav">
+              {this.props.username === null
+                ?
+                <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/Login">Login</Link>
+                </li>
+                <li className="nav-item">
+                <Nav.Link href="/Registration">Registration</Nav.Link>
+                </li>
+                </>
+                :
+                <React.Fragment>
+                  <li className="nav-item">
+                    <span className="nav-link text-light">Welcome, {this.props.username}</span>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/Login" onClick={this.props.logoutUser}>Logout</Link>
+                  </li>
+                </React.Fragment>
+              }
+            </ul>
 
     </Nav>
   </Navbar.Collapse>
