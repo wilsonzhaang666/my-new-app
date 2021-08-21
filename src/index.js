@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {initUsers,insertOrUpdateUser} from "./components/UserUpdater"
+
 import './index.css';
 import App from "./components/App";
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+initUsers();
 ReactDOM.render(
   <React.StrictMode>
     <App />

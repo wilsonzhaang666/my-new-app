@@ -9,6 +9,7 @@ import MyProfile from "./MyProfile";
 
 
 class App extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = { username: null };
@@ -22,6 +23,7 @@ class App extends React.Component {
     this.setState({ username: null });
   }
 
+  
   render() {
     return (
       <div className="d-flex flex-column min-vh-100">
@@ -35,7 +37,7 @@ class App extends React.Component {
                   <Login {...props} loginUser={this.loginUser} />
                 )} />
                <Route path="/profile">
-                  <MyProfile username={this.state.username} />
+                  <MyProfile username={this.state.username} password={this.state.password}/>
                 </Route>
 
                <Route path="/Registration">
