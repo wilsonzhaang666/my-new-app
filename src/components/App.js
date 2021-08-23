@@ -6,6 +6,7 @@ import Home from './Home';
 import Registration from './Registration';
 import Login from './Login';
 import MyProfile from "./MyProfile";
+import Post from "./Post";
 
 
 class App extends React.Component {
@@ -43,6 +44,9 @@ class App extends React.Component {
                <Route path="/Registration">
                   <Registration username={this.state.username} />
                 </Route>
+                <Route path="/Post">
+                  <Post username={this.state.username} />
+                </Route>  
                 <Route path="/">
                   <Home username={this.state.username} />
                 </Route>                

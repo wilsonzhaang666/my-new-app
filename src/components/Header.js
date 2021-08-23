@@ -16,9 +16,14 @@ class Header extends React.Component {
     <Nav className="me-auto">
     <Link className="nav-link" to="/">Home</Link>
     {this.props.username !== null &&
+                <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/profile">My Profile</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/post">Posts</Link>
+                </li>
+                </>
               }
     
 

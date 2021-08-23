@@ -1,5 +1,5 @@
 const USER_DATA = "userdata"
-
+const POST_DATA = "posts"
 
 function initUsers() {
     if(localStorage.getItem(USER_DATA) !== null)
@@ -15,8 +15,32 @@ function initUsers() {
         }
       ];
       localStorage.setItem(USER_DATA, JSON.stringify(users));
+
+
+
     }
 
+function initPosts() {
+  if(localStorage.getItem(POST_DATA) !== null)
+    return;
+  const posts = [
+    {
+      id:0,
+      username: "",
+      post: ""
+    }
+  ];
+  localStorage.setItem(POST_DATA, JSON.stringify(posts))
+}
+
+
+function getCorrectPostID(){
+  const post = getPostData();
+
+  var largest = post.length
+
+  return largest;
+}
 function getCorrectID(){
   const users = getUser();
   var largest = 0;
@@ -28,6 +52,16 @@ function getCorrectID(){
   return largest;
 
   
+}
+
+function getPostData(){
+  return JSON.parse(localStorage.getItem(POST_DATA))
+  //get the post data
+}
+
+function setPostData(postData){
+  localStorage.setItem(POST_DATA, JSON.stringify(postData))
+  //set postdata
 }
 
 function getUser() {
@@ -50,6 +84,14 @@ function insertOrUpdateUser(user) {
     setUser(users);
   }
   
+  function insertOrUpdatePost(post) {
+    const posts = getPostData();
+  
+    posts[post.id] = post;
+  
+    setPostData(posts);
+  }
+  
 
   function verifyUser(username, password) {
     const users = getUser();
@@ -65,7 +107,12 @@ function insertOrUpdateUser(user) {
   }  
 export{
     initUsers,
+    initPosts,
     getUser,
+    getPostData,
+    setPostData,
+    insertOrUpdatePost,
+    getCorrectPostID,
     insertOrUpdateUser,
     verifyUser,
     getCorrectID
