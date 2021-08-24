@@ -7,8 +7,8 @@ function Post(props) {
     const [post, setPost] = useState("");
     
     const [errorMessage, setErrorMessage] = useState(null);
-    const [posts, setPosts] = useState([]);
-  
+    const [posts, setPosts] = useState(getPostData());
+    const postdata = getPostData();
     const handleInputChange = (event) => {
       setPost(event.target.value);
     }
@@ -23,10 +23,9 @@ function Post(props) {
         setErrorMessage("A post cannot be empty.");
         return;
       }
-  
-      // Create post.
-      setPosts([ ...posts, { username: props.username, text: postTrimmed }]);
       
+      // Create post.
+      setPosts(getPostData())
       // Reset post content.
       setPost("");
       setErrorMessage("");
@@ -41,7 +40,17 @@ function Post(props) {
       insertOrUpdatePost(postdata);
       setPostData(getPostData());
     }
+    const deletePost = (event) => {
+      //delete the profile
+      for (var i = 0; postdata.length > i; i++) {
+        if (props.username === postdata.at(i).username) {
+          postdata.splice(i, 1);
+        }
+      }
+      localStorage.setItem("posts", JSON.stringify(postdata))
   
+    }
+    
     return (
       <div>
         <form onSubmit={handleSubmit}>
@@ -68,18 +77,46 @@ function Post(props) {
         <h1>Forum</h1>
         <div>
         {
-          posts.length === 0 ?
-            <span className="text-muted">No posts have been submitted.</span>
-            :
-            //in order to make it stay we should store the posts in the local storage instead
-            posts.map((x) =>
-              <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
-                <h3 className="text-primary">{x.username}</h3>
-                {x.text}
-              </div>
-            )
+          
         }
         </div>
+        <div>
+        {Object.keys(posts).map((id) => {
+            const post = posts[id];
+            if (post.id ===0){
+              return(
+                null
+              )
+              
+            }else if (post.username === props.username){
+              return(
+                <div key={post.id}>
+                  <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
+                    <h3>Master</h3>
+                  <h3 className="text-primary">{post.username}</h3>
+                  {post.post}
+                </div>
+                <button onClick={deletePost} className="btn btn-danger">Delete Post</button>
+
+                </div>
+              )
+            }
+            else{
+              return (
+
+              
+                <div key={post.id}>
+                  <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
+                  <h3 className="text-primary">{post.username}</h3>
+                  {post.post}
+                </div>
+                </div>
+              );
+            }
+           
+          })}
+        </div>
+        
       </div>
     );
   }
