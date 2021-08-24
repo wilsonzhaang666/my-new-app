@@ -76,6 +76,10 @@ function setUsername(username){
     localStorage.setItem("user", username)
 }
 
+function getUsername(){
+  return localStorage.getItem("user")
+}
+
 function insertOrUpdateUser(user) {
     const users = getUser();
   
@@ -105,9 +109,16 @@ function insertOrUpdateUser(user) {
   
     return false;
   }  
+
+  function removeUser() {
+    localStorage.removeItem("user");
+  }
+  
 export{
     initUsers,
+    removeUser,
     initPosts,
+    getUsername,
     getUser,
     getPostData,
     setPostData,
