@@ -1,17 +1,40 @@
 import React, { useState }from "react";
-import {Card,Button,Modal} from 'react-bootstrap';
+import {Form,Button,Modal} from 'react-bootstrap';
 import {getPostData,setPostData,getCorrectPostID,insertOrUpdatePost} from "./UserUpdater"
 
 
 function Post(props) {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = (event) => {
+    setShow(true);
+    setFields({ id:event.id, username:event.username, post:event.post });
+    }
     const [post, setPost] = useState("");
-    
+    const postdata = getPostData();
+
+
+
     const [errorMessage, setErrorMessage] = useState(null);
     const [posts, setPosts] = useState(getPostData());
-    const postdata = getPostData();
+
+
+    console.log(post)
     const handleInputChange = (event) => {
       setPost(event.target.value);
+      
     }
+    const handlePostChange=(event) => {
+      setFields({ ...fields, [event.target.name]: event.target.value });
+
+    }
+    const [fields, setFields] = useState({
+      id:0,
+      username:"",
+      post:"",
+    });
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -25,7 +48,6 @@ function Post(props) {
       }
       
       // Create post.
-      setPosts(getPostData())
       // Reset post content.
       setPost("");
       setErrorMessage("");
@@ -39,16 +61,30 @@ function Post(props) {
       }
       insertOrUpdatePost(postdata);
       setPostData(getPostData());
+      setPosts(getPostData())
+
     }
+
+    const handleEdit =(event) => {
+      event.preventDefault();
+      const postdata = { ...fields };
+      insertOrUpdatePost(postdata);
+      setPostData(getPostData());
+      setPosts(getPostData())
+
+      alert('Eddit success')
+    }
+
     const deletePost = (event) => {
       //delete the profile
       for (var i = 0; postdata.length > i; i++) {
-        if (props.username === postdata.at(i).username) {
+        if (event === postdata.at(i).id) {
           postdata.splice(i, 1);
         }
       }
       localStorage.setItem("posts", JSON.stringify(postdata))
-  
+      setPosts(getPostData())
+
     }
     
     return (
@@ -96,8 +132,48 @@ function Post(props) {
                   <h3 className="text-primary">{post.username}</h3>
                   {post.post}
                 </div>
-                <button onClick={deletePost} className="btn btn-danger">Delete Post</button>
+                <button onClick={() => deletePost(post.id)} className="btn btn-danger">Delete Post</button>
+                <Button variant="primary" onClick={() =>handleShow(post)}>
+        Edit
+      </Button>
 
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit your profile</Modal.Title>
+        </Modal.Header>
+        <div>
+
+
+
+
+
+        <hr />
+
+            <form onSubmit={handleEdit}>
+                
+
+            <Form.Group className="mb-3">
+        <Form.Label>Example textarea</Form.Label>
+        <Form.Control as="textarea" rows={3} name="post" id="post" className="form-control"
+                  value={fields.post} onChange={handlePostChange}  />
+        </Form.Group>
+
+
+              <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <input type="submit" className="btn btn-primary" value="Edit" />
+
+        </Modal.Footer>
+            </form>
+          </div>
+      </Modal>
                 </div>
               )
             }

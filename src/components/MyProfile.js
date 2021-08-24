@@ -155,8 +155,7 @@ function MyProfile(props) {
         </Modal.Header>
         <div>
         <hr />
-        <div className="row">
-          <div className="col-md-3">
+
             <form onSubmit={handleSubmit}>
 
               <div className="form-group">
@@ -190,8 +189,7 @@ function MyProfile(props) {
 
         </Modal.Footer>
             </form>
-          </div>
-        </div>
+
       </div>  
 
       </Modal>
