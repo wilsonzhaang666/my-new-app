@@ -39,7 +39,7 @@ function Login(props) {
     temp.password = "";
     setFields(temp);
 
-    // Set error message.
+    // Set error me ssage.
     setErrorMessage("Username and / or password invalid, please try again.");
   }
 
@@ -55,14 +55,17 @@ function Login(props) {
               <input name="username" id="username" className="form-control"
                 value={fields.username} onChange={handleInputChange} />
             </div>
+
             <div className="form-group">
               <label htmlFor="password" className="control-label">Password</label>
               <input type="password" name="password" id="password" className="form-control"
                 value={fields.password} onChange={handleInputChange} />
             </div>
+            <br/>
             <div className="form-group">
               <input type="submit" className="btn btn-primary" value="Login" />
             </div>
+
             {errorMessage !== null &&
               <div className="form-group">
                 <span className="text-danger">{errorMessage}</span>

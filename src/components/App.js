@@ -38,10 +38,10 @@ function App() {
                <Route path="/profile">
                   <MyProfile username={username}/>
                 </Route>
+                <Route path="/Registration" render={props => (
+                <Registration {...props} loginUser={loginUser} />
+              )} />
 
-               <Route path="/Registration">
-                  <Registration username={username} />
-                </Route>
                 <Route path="/Post">
                   <Post username={username} />
                 </Route>  

@@ -18,7 +18,7 @@ function Post(props) {
 
 
     const [errorMessage, setErrorMessage] = useState(null);
-    const [posts, setPosts] = useState(getPostData());
+    const [posts, setPosts] = useState(getPostData()); 
 
 
     console.log(post)

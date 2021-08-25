@@ -1,7 +1,7 @@
 import React, { useState }from "react";
 import {getUser,insertOrUpdateUser,getCorrectID} from "./UserUpdater"
 
-function Registration() {
+function Registration(props) {
   let newDate = new Date()
   const [fields, setFields] = useState(
     {
@@ -11,8 +11,8 @@ function Registration() {
       email:'',
       password: '',
       confirmpassword: '',
-    errors: { },
     });
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const [users, setUser] = useState(getUser());
 
@@ -41,44 +41,25 @@ function Registration() {
    
     
     if(!username ||!email||!password||!confirmpassword) {
-      const fields = user.fields;
-      setFields({
-        fields: fields,
-        errors: { "errorMessage": "All the blank should be fill" }
-      });
+      setErrorMessage("All the blank should be fill"  );
     }
     else if (submission ==="false"){
-      const fields = user.fields;
-      setFields({
-        fields: fields,
-        errors: { "errorMessage": "the username is already registed" }
-      });
+      setErrorMessage("the username is already registed" );
     }
     else if (!emailRegex.test(email)) 
     { 
-      const fields = user.fields;
-      setFields({
-        fields: fields,
-        errors: { "errorMessage": "Email should be fill in proper format" }
-      });
+      setErrorMessage("Email should be fill in proper format");
     }
     else if (!passwordRegex.test(password)) 
     { 
-      const fields = user.fields;
-      setFields({
-        fields: fields,
-        errors: { "errorMessage": "Password should be at least six characters and should be a mix of uppercase and lowercase characters, numbers and punctuation" }
-      });
+      setErrorMessage("Password should be at least six characters and should be a mix of uppercase and lowercase characters, numbers and punctuation");
     }
     else if (password !== confirmpassword) 
     { 
-      const fields = user.fields;
-      setFields({
-        fields: fields,
-        errors: { "errorMessage": "The confirm password is not the same as the password" }
-      });
+      setErrorMessage("The confirm password is not the same as the password");
     }
     else{
+      setErrorMessage("")
       var idCount=0;
       {Object.keys(users).map((id) => {
         var userdata = users[id];
@@ -97,7 +78,11 @@ function Registration() {
         insertOrUpdateUser(user)  
         setUser(getUser());
         alert("Register success!");
-        window.location.reload();
+        props.loginUser(fields.username);
+
+        // Navigate to the home page.
+        props.history.push("/");
+
       }
       else{
         user.id = getCorrectID() + 1;
@@ -106,7 +91,12 @@ function Registration() {
         insertOrUpdateUser(user)  
         setUser(getUser());
         alert("Register success!");
-        window.location.reload();
+        props.loginUser(fields.username);
+
+        // Navigate to the home page.
+        props.history.push("/");
+
+
 
       }
       
@@ -159,11 +149,11 @@ function Registration() {
               <div className="form-group">
                 <input type="submit" className="btn btn-primary" value="Sign Up" />
               </div>
-              {fields.errors["errorMessage"] &&
-                <div className="form-group">
-                  <span className="text-danger">{fields.errors["errorMessage"]}</span>
-                </div>
-              }
+              {errorMessage !== null &&
+              <div className="form-group">
+                <span className="text-danger">{errorMessage}</span>
+              </div>
+            }
             </form>
           </div>
         </div>

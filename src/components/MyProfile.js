@@ -57,7 +57,8 @@ function MyProfile(props) {
     localStorage.setItem("userdata", JSON.stringify(usersdata))
 
   }
-  
+  //THE VALIDATION NEED TO BE DONE！！！
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // const email = user.email;
@@ -159,23 +160,23 @@ function MyProfile(props) {
             <form onSubmit={handleSubmit}>
 
               <div className="form-group">
+                <div className="col-sm-8">
                 <label htmlFor="email" className="control-label">Email</label>
                 <input name="email" id="email" className="form-control"
                   value={fields.email} onChange={handleInputChange} />
-              </div>
+                  </div>
               <br />
-              
-              <div className="form-group">
+              <div className="col-sm-8">               
                 <label htmlFor="password" className="control-label">Password</label>
                 <input type="password" name="password" id="password" className="form-control"
                   value={fields.password} onChange={handleInputChange} />
-              </div>
+                  </div>
               <br />
-
-              <div className="form-group">
+              <div className="col-sm-8">
                 <label htmlFor="confirmpassword" className="control-label">Confirm Password</label>
                 <input type="password" name="confirmpassword" id="confirmpassword" className="form-control"
                   value={fields.confirmpassword} onChange={handleInputChange} />
+                  </div>
               </div>
               <br />
 
