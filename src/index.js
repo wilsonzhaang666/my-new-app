@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {initUsers,initPosts} from "./components/UserUpdater"
+import {initUsers,initPosts,initReply} from "./components/UserUpdater"
 
 import './index.css';
 import App from "./components/App";
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
+initReply();
 initUsers();
 initPosts();
 ReactDOM.render(

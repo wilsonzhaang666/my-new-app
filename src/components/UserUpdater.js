@@ -1,5 +1,6 @@
 const USER_DATA = "userdata"
 const POST_DATA = "posts"
+const REPLY_DATA ="replies"
 
 function initUsers() {
     if(localStorage.getItem(USER_DATA) !== null)
@@ -33,7 +34,27 @@ function initPosts() {
   localStorage.setItem(POST_DATA, JSON.stringify(posts))
 }
 
+function initReply() {
+  if(localStorage.getItem(REPLY_DATA) !== null)
+    return;
+  const comments = [
+    {
+      id:0,
+      postId:0,
+      username: "",
+      post: ""
+    }
+  ];
+  localStorage.setItem(REPLY_DATA, JSON.stringify(comments))
+}
 
+function getCorrectreplyID(){
+  const replies = getReplyData();
+
+  var largest = replies.length
+
+  return largest;
+}
 function getCorrectPostID(){
   const post = getPostData();
 
@@ -57,6 +78,15 @@ function getCorrectID(){
 function getPostData(){
   return JSON.parse(localStorage.getItem(POST_DATA))
   //get the post data
+}
+
+function getReplyData(){
+  return JSON.parse(localStorage.getItem(REPLY_DATA))
+}
+
+function setReplyData(replydata){
+  localStorage.setItem(REPLY_DATA, JSON.stringify(replydata))
+
 }
 
 function setPostData(postData){
@@ -87,6 +117,14 @@ function insertOrUpdateUser(user) {
   
     setUser(users);
   }
+
+  function insertOrUpdateComment(Comment) {
+    const comments = getReplyData();
+  
+    comments[Comment.id] = Comment;
+  
+    setReplyData(comments);
+  }
   
   function insertOrUpdatePost(post) {
     const posts = getPostData();
@@ -116,6 +154,10 @@ function insertOrUpdateUser(user) {
   
 export{
     initUsers,
+    initReply,
+    insertOrUpdateComment,
+    setReplyData,
+    getReplyData,
     removeUser,
     initPosts,
     getUsername,
@@ -123,6 +165,7 @@ export{
     getPostData,
     setPostData,
     insertOrUpdatePost,
+    getCorrectreplyID,
     getCorrectPostID,
     insertOrUpdateUser,
     verifyUser,
