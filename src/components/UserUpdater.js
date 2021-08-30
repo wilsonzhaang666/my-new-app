@@ -50,17 +50,25 @@ function initReply() {
 
 function getCorrectreplyID(){
   const replies = getReplyData();
+  var largest = 0;
+  for (var i = 0; replies.length > i; i++) {
+    if (Number(replies.at(i).id)>largest) {
+      largest = Number(replies.at(i).id);
+    }
+  }
 
-  var largest = replies.length
-
-  return largest;
+  return largest+1;
 }
 function getCorrectPostID(){
   const post = getPostData();
+  var largest = 0;
+  for (var i = 0; post.length > i; i++) {
+    if (Number(post.at(i).id)>largest) {
+      largest = Number(post.at(i).id);
+    }
+  }
 
-  var largest = post.length
-
-  return largest;
+  return largest+1;
 }
 function getCorrectID(){
   const users = getUser();

@@ -18,7 +18,7 @@ function Post(props) {
     const [post, setPost] = useState("");
     const postdata = getPostData();
 
-
+    const repliesdata = getReplyData();
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [posts, setPosts] = useState(getPostData()); 
@@ -91,18 +91,17 @@ function Post(props) {
     }
 
     const deletePost = (event) => {
-      //delete the profile
-      for (var i = 0; postdata.length > i; i++) {
-        if (event === postdata.at(i).id) {
-          postdata.splice(i, 1);
+      const postdata = {  id:event, username:null};
+      insertOrUpdatePost(postdata);
+      setPostData(getPostData());
+      
 
-        }
-      }
-      localStorage.setItem("posts", JSON.stringify(postdata))
       setPosts(getPostData())
 
 
+
     }
+
 
     const replypost = (event) => {
       setShow1(true);
@@ -164,6 +163,8 @@ function Post(props) {
               )
               
             }else if (post.username === props.username){
+              if(post.username !== null){
+
               
               return(
                 <div key={post.id}>
@@ -188,7 +189,7 @@ function Post(props) {
               }
               )}
                 </div>
-                <button onClick={() => deletePost(post.id)} style={{ margin:"5px" }} className="btn btn-danger">Delete Post</button>
+                <button onClick={() => {deletePost(post.id)}} style={{ margin:"5px" }} className="btn btn-danger">Delete Post</button>
                 <Button variant="primary" style={{ margin:"5px" }}  onClick={() =>handleShow(post,props)}>
         Edit
       </Button>
@@ -278,9 +279,10 @@ function Post(props) {
       </Modal>
                 </div>
               )
-            }
+            }}
             else{
-              return (
+              if(post.username !== null){              
+                return (
 
               
                 <div key={post.id}>
@@ -311,7 +313,7 @@ function Post(props) {
               );
             }
            
-          })}
+          }})}
         </div>
         
       </div>
