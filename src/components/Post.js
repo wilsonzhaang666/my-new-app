@@ -2,9 +2,10 @@ import React, { useState }from "react";
 import {Form,Button,Modal,Card} from 'react-bootstrap';
 import {getUser,getPostData,setPostData,getCorrectPostID,insertOrUpdatePost,getCorrectreplyID,insertOrUpdateComment,setReplyData,getReplyData} from "./UserUpdater"
 import def_img from "../assets/usericon.png";
-
+import white from "../assets/white.png"
 
 function Post(props) {
+  const [image,setImage] =useState("");
 
   const [show, setShow] = useState(false);
 
@@ -12,6 +13,28 @@ function Post(props) {
   const [show1, setShow1] = useState(false);
 
   const handleClose1 = () => setShow1(false);
+  const replypost = (event) => {
+      
+    setShow1(true);
+    const replyId = getCorrectreplyID();
+    var userimg;
+    for (var i = 0; usersdata.length > i; i++) {
+      if (props.username === usersdata.at(i).username) {
+        userimg = usersdata.at(i).img;
+       if(usersdata.at(i).img !=""){
+        userimg = usersdata.at(i).img;
+       }
+       else if(userimg===""){
+        userimg = def_img
+       }
+      }
+    }
+    //set the ID to the length of array so that every new post will have the highest number as id
+    // and set Post ID as post ID to recognize which reply is belong to which post.
+    setComments({id:replyId, postId:event.id, username:props.username,usericon:userimg, post:
+      "" });
+  
+  }
   const handleShow = (event) => {
     setShow(true);
     setFields({ id:event.id, username:event.username, post:event.post });
@@ -49,8 +72,27 @@ function Post(props) {
       post:"",
     });
     const usersdata = getUser();
-
+    const onImageChange = async (event) =>{
+      const file = event.target.files[0];
+      const base64 = await convertBase64(file);
+      setImage(base64);
+  };
+    const convertBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+  
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+  
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    };
     const handleSubmit = (event) => {
+      console.log(image)
       event.preventDefault();
   
       // Trim the post text.
@@ -79,12 +121,23 @@ function Post(props) {
          }
         }
       }
-      const postdata = {
-        id:PostId,
-        img:userimg,
-        username:props.username,
-
-        post
+      if(image === ""){
+        var postdata = {
+          id:PostId,
+          img:userimg,
+          username:props.username,
+          image:"",
+          post,
+        }
+      }
+      else if(image !== ""){
+        var postdata = {
+          id:PostId,
+          img:userimg,
+          username:props.username,
+          image:image,
+          post
+        }
       }
       insertOrUpdatePost(postdata);
       setPostData(getPostData());
@@ -117,30 +170,9 @@ function Post(props) {
     }
 
 
-    const replypost = (event) => {
-      setShow1(true);
-      const replyId = getCorrectreplyID();
-      var userimg;
-      for (var i = 0; usersdata.length > i; i++) {
-        if (props.username === usersdata.at(i).username) {
-          userimg = usersdata.at(i).img;
-         if(usersdata.at(i).img !=""){
-          userimg = usersdata.at(i).img;
-         }
-         else if(userimg===""){
-          userimg = def_img
-         }
-        }
-      }
-      //set the ID to the length of array so that every new post will have the highest number as id
-      // and set Post ID as post ID to recognize which reply is belong to which post.
-      setComments({id:replyId, postId:event.id, username:props.username,usericon:userimg, post:
-        "" });
     
-    }
 
-    const handleReply = (event) => {
-      event.preventDefault();
+    const handleReply = () => {
       const replydata = { ...comments };
       insertOrUpdateComment(replydata)
       setReplyData(getReplyData())
@@ -149,7 +181,6 @@ function Post(props) {
 
 
     }
-    
     return (
       <div>
         <form onSubmit={handleSubmit}>
@@ -170,15 +201,20 @@ function Post(props) {
                 onClick={() => { setPost(""); setErrorMessage(null); }} />  
               <input type="submit" className="btn btn-primary" value="Post" />
             </div>
+            <div className="col-sm-8">
+                <label htmlFor="email" className="control-label"></label>
+                <input type ="file" style={{ margin:"5px" }} placeholder ="Choose Image" 
+              
+             onChange= { onImageChange } />
+                  </div>
+              <br />
           </fieldset>
         </form>
   
         <hr />
         <h1>Forum</h1>
         <div>
-        {
-          
-        }
+
         </div>
         <div>
         {Object.keys(posts).map((id) => {
@@ -200,6 +236,9 @@ function Post(props) {
 
                   <h3 className="text-primary">{post.username}</h3>
                   {post.post}
+                  <div className="form-group">
+                  <img  src={post.image} alt="" width='100'  height= '80' />
+                  </div>
                   <div>
                 {Object.keys(replies).map((id) => {
                 const reply = replies[id]
@@ -270,6 +309,7 @@ function Post(props) {
         onHide={handleClose1}
         backdrop="static"
         keyboard={false}
+        fade={false}
       >
         <Modal.Header closeButton>
           <Modal.Title>Reply to the Post</Modal.Title>
@@ -310,7 +350,11 @@ function Post(props) {
               )
             }}
             else{
-              if(post.username !== null){              
+
+              if(post.username !== null){ 
+                if(post.image ===""){
+                  post.image =white
+                }  
                 return (
 
               
@@ -320,6 +364,10 @@ function Post(props) {
 
                   <h3 className="text-primary">{post.username}</h3>
                   {post.post}
+                                    <div className="form-group">
+                                     
+                  <img  src={post.image} alt="" width='100'  height= '80' />
+                  </div>
                   {Object.keys(replies).map((id) => {
                 const reply = replies[id]
                 if (reply.postId === post.id){
@@ -340,6 +388,48 @@ function Post(props) {
       <Button variant="primary" onClick={() =>replypost(post)}>
         Reply
       </Button>
+      <Modal
+        show={show1}
+        onHide={handleClose1}
+        backdrop="static"
+        keyboard={false}
+        fade={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Reply to the Post</Modal.Title>
+        </Modal.Header>
+        <div>
+
+
+
+
+
+        <hr />
+
+            <form onSubmit={handleReply}>
+                
+
+            <Form.Group className="mb-3">
+            <h3>{props.username}</h3>
+
+        <Form.Label>Reply to the Post</Form.Label>
+        <Form.Control as="textarea" rows={3} name="post" id="post" className="form-control"
+                  value={comments.post} onChange={handleReplyChange}  />
+
+        </Form.Group>
+        
+
+
+              <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose1}>
+            Close
+          </Button>
+          <input type="submit" className="btn btn-primary" value="Send Comment" />
+
+        </Modal.Footer>
+            </form>
+          </div>
+      </Modal>
                 </div>
                
                 </div>
@@ -351,6 +441,7 @@ function Post(props) {
         
       </div>
     );
+  
   }
 
 
