@@ -1,15 +1,34 @@
 import React, { useState }from "react";
 import {getUser,insertOrUpdateUser, setUser} from "./UserUpdater"
 import {Card,Button,Modal} from 'react-bootstrap';
+import def_img from "../assets/usericon.png";
 
 function MyProfile(props) {
   const [show, setShow] = useState(false);
+  const [image,setImage] =useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const onImageChange = async (event) =>{
+    const file = event.target.files[0];
+    const base64 = await convertBase64(file);
+    setImage(base64);
+};
   const [show1, setShow1] = useState(false);
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
 
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
   const usersdata = getUser();
@@ -21,7 +40,9 @@ function MyProfile(props) {
      var useremail = usersdata.at(i).email;
      var userpassword = usersdata.at(i).password;
      var userconfirmation = usersdata.at(i).confirmpassword
-     var usererror = usersdata.at(i).errors;
+     var userimage = usersdata.at(i).img; 
+
+     
     }
   }
   const [fields, setFields] = useState({
@@ -31,7 +52,7 @@ function MyProfile(props) {
     email:useremail,
     password: userpassword,
     confirmpassword: userconfirmation,
-  errors: usererror,
+    img:userimage
   });
 
 
@@ -84,7 +105,7 @@ function MyProfile(props) {
 
     // Convert pet.id to a number.
     user.id = Number(user.id);
-
+    user.img = image;
     insertOrUpdateUser(user);
 
     // Update state.
@@ -95,13 +116,27 @@ function MyProfile(props) {
   var email;
   var user;
   var joineddate;
+  var img;
   for (var i = 0; usersdata.length > i; i++) {
     if (props.username === usersdata.at(i).username) {
      email = usersdata.at(i).email;
      user = usersdata.at(i).username;
      joineddate = usersdata.at(i).joineddate;
+     img = usersdata.at(i).img;
+     if(usersdata.at(i).img !=""){
+      img = usersdata.at(i).img;
+      console.log("12")
+     }
+     else if(img===""){
+      img = def_img
+      console.log("11")
+     }
+      
+
+
       // this.state.users.at(represent which user we are in)
     }
+
   }
 
     // console.log(this);
@@ -116,6 +151,7 @@ function MyProfile(props) {
   <Card bg="light" style={{ width: '20rem' }}>
     <Card.Header>My Profile</Card.Header>
     <Card.Body>
+    <img src={img} alt="" width='100'  height= '80' />
       <div style={{lineHeight:" 300%", padding:"10px"}}>
       <h4 class="mb-0 mt-0">{user}</h4>
       <span>{email}</span>
@@ -160,6 +196,13 @@ function MyProfile(props) {
             <form onSubmit={handleSubmit}>
 
               <div className="form-group">
+              <div className="col-sm-8">
+                <label htmlFor="email" className="control-label">Avatar</label>
+                <input type ="file" placeholder ="Add image" 
+              
+             onChange= { onImageChange } />
+                  </div>
+              <br />
                 <div className="col-sm-8">
                 <label htmlFor="email" className="control-label">Email</label>
                 <input name="email" id="email" className="form-control"

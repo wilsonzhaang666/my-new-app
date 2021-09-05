@@ -11,9 +11,10 @@ function Registration(props) {
       email:'',
       password: '',
       confirmpassword: '',
+      img:"",
     });
     const [errorMessage, setErrorMessage] = useState(null);
-
+    
     const [users, setUser] = useState(getUser());
 
   const handleInputChange = (event) => {

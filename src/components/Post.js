@@ -1,6 +1,7 @@
 import React, { useState }from "react";
 import {Form,Button,Modal,Card} from 'react-bootstrap';
-import {getPostData,setPostData,getCorrectPostID,insertOrUpdatePost,getCorrectreplyID,insertOrUpdateComment,setReplyData,getReplyData} from "./UserUpdater"
+import {getUser,getPostData,setPostData,getCorrectPostID,insertOrUpdatePost,getCorrectreplyID,insertOrUpdateComment,setReplyData,getReplyData} from "./UserUpdater"
+import def_img from "../assets/usericon.png";
 
 
 function Post(props) {
@@ -47,8 +48,8 @@ function Post(props) {
       username:"",
       post:"",
     });
+    const usersdata = getUser();
 
-  
     const handleSubmit = (event) => {
       event.preventDefault();
   
@@ -66,10 +67,23 @@ function Post(props) {
       setErrorMessage("");
       
       const PostId = Number(getCorrectPostID());
-      console.log(PostId);
+      var userimg;
+      for (var i = 0; usersdata.length > i; i++) {
+        if (props.username === usersdata.at(i).username) {
+          userimg = usersdata.at(i).img;
+         if(usersdata.at(i).img !=""){
+          userimg = usersdata.at(i).img;
+         }
+         else if(userimg===""){
+          userimg = def_img
+         }
+        }
+      }
       const postdata = {
         id:PostId,
+        img:userimg,
         username:props.username,
+
         post
       }
       insertOrUpdatePost(postdata);
@@ -106,9 +120,21 @@ function Post(props) {
     const replypost = (event) => {
       setShow1(true);
       const replyId = getCorrectreplyID();
+      var userimg;
+      for (var i = 0; usersdata.length > i; i++) {
+        if (props.username === usersdata.at(i).username) {
+          userimg = usersdata.at(i).img;
+         if(usersdata.at(i).img !=""){
+          userimg = usersdata.at(i).img;
+         }
+         else if(userimg===""){
+          userimg = def_img
+         }
+        }
+      }
       //set the ID to the length of array so that every new post will have the highest number as id
       // and set Post ID as post ID to recognize which reply is belong to which post.
-      setComments({id:replyId, postId:event.id, username:props.username, post:
+      setComments({id:replyId, postId:event.id, username:props.username,usericon:userimg, post:
         "" });
     
     }
@@ -170,6 +196,8 @@ function Post(props) {
                 <div key={post.id}>
                   <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
                     <h3>Master</h3>
+                    <img src={post.img} alt="" width='80'  height= '60' />
+
                   <h3 className="text-primary">{post.username}</h3>
                   {post.post}
                   <div>
@@ -180,6 +208,7 @@ function Post(props) {
                   return(
                     <Card>
                       <Card.Body>
+                      <img style={{ display:"inline",float:"left" ,fontSize:"20px"}} src={reply.usericon} alt="" width='40'  height= '30' />
                       <div><p style={{ display:"inline",float:"left" ,fontSize:"20px"}}>{reply.username}</p><p> :  {reply.post}</p></div>
                       
                     </Card.Body>
@@ -287,6 +316,8 @@ function Post(props) {
               
                 <div key={post.id}>
                   <div className="border my-3 p-3" style={{ whiteSpace: "pre-wrap" }}>
+                  <img src={post.img} alt="" width='80'  height= '60' />
+
                   <h3 className="text-primary">{post.username}</h3>
                   {post.post}
                   {Object.keys(replies).map((id) => {
@@ -296,7 +327,9 @@ function Post(props) {
                   return(
                     <Card>
                       <Card.Body>
-                      <div><p style={{ display:"inline",float:"left" ,fontSize:"20px"}}>{reply.username}</p><p> :  {reply.post}</p></div>
+                     
+
+                      <img style={{ display:"inline",float:"left" ,fontSize:"20px"}} src={reply.usericon} alt="" width='40'  height= '30' /><div><p style={{ display:"inline",float:"left" ,fontSize:"20px"}}>{reply.username}</p><p> :  {reply.post}</p></div>
                       
                     </Card.Body>
                     </Card>
@@ -304,9 +337,9 @@ function Post(props) {
                 }
               }
               )}
-                <Button variant="primary" style={{ margin:"5px" }} onClick={() =>replypost(post)}>
-                Reply
-                </Button>
+      <Button variant="primary" onClick={() =>replypost(post)}>
+        Reply
+      </Button>
                 </div>
                
                 </div>
