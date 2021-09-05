@@ -82,25 +82,27 @@ function MyProfile(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const email = user.email;
-    // const password = user.password;
-    // const confirmpassword = user.confirmpassword;
-    // const emailRegex = /\S+@\S+\.\S+/;
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[A-Za-z\d!@#$%^&*?]{6,}$/;
+    const user = { ...fields };
+
+    const email = user.email;
+    const password = user.password;
+    const confirmpassword = user.confirmpassword;
+    const emailRegex = /\S+@\S+\.\S+/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[A-Za-z\d!@#$%^&*?]{6,}$/;
     
-    // if (!emailRegex.test(email)) 
-    // { 
-    //   alert("email need to be fill in properly")
-    // }
-    // else if (!passwordRegex.test(password)) 
-    // { 
-    //   alert("Password should be at least six characters and should be a mix of uppercase and lowercase characters, numbers and punctuation")
-    // }
-    // else if (password !== confirmpassword) 
-    // { 
-    //   alert("Password and confirmpassword should be the same")
-    // }
-    // else{
+    if (!emailRegex.test(email)) 
+    { 
+      alert("email need to be fill in properly");
+    }
+    else if (!passwordRegex.test(password)) 
+    { 
+      alert("Password should be at least six characters and should be a mix of uppercase and lowercase characters, numbers and punctuation")
+    }
+    else if (password !== confirmpassword) 
+    { 
+      alert("Password and confirmpassword should be the same")
+    }
+    else{
     const user = { ...fields };
 
     // Convert pet.id to a number.
@@ -111,7 +113,7 @@ function MyProfile(props) {
     // Update state.
     setUser(getUser());
     alert('Eddit success')
-    // }
+    }
   }
   var email;
   var user;
@@ -148,25 +150,29 @@ function MyProfile(props) {
         <>
 
 
-  <Card bg="light" style={{ width: '20rem' }}>
-    <Card.Header>My Profile</Card.Header>
+  <Card bg="light" style={{ width: '30rem' ,marginLeft: "auto",
+marginRight: "auto"}}>
+    <Card.Header className="text-center">My Profile</Card.Header>
     <Card.Body>
-    <img src={img} alt="" width='100'  height= '80' />
+      <div>
+    <img src={img} alt="" width='100'  height= '80' style={{ display:"block",
+  marginLeft: "auto",
+  marginRight: "auto" }}/>
+</div>
       <div style={{lineHeight:" 300%", padding:"10px"}}>
-      <h4 class="mb-0 mt-0">{user}</h4>
-      <span>{email}</span>
+      <h4 class="mb-0 mt-0" style={{textAlign:"center"}}>{user}</h4>
+      <p  style={{textAlign:"center"}}>{email}</p>
       </div>
 
       
-      
-      <Button variant="primary" onClick={handleShow}>
+      <div style={{display:"flex",position: "absolute",marginLeft:"52%",marginTop:"8%"}}>
+      <Button  style={{ margin:"5px" }} variant="primary" onClick={handleShow}>
        Edit
       </Button>
-
-      
-      <Button variant="danger" onClick={handleShow1}>
+      <Button   style={{ margin:"5px" }} variant="danger" onClick={handleShow1}>
         Delete Profile
       </Button>
+      </div>
 
       <Modal show={show1} onHide={handleClose1}>
         <Modal.Header closeButton>

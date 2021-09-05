@@ -226,7 +226,9 @@ function Post(props) {
               
             }else if (post.username === props.username){
               if(post.username !== null){
-
+                if(post.image ===""){
+                  post.image =white
+                }  
               
               return(
                 <div key={post.id}>
